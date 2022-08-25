@@ -4,9 +4,153 @@ info:
   version: 1.0.0
   description: The Meeting App For Ultimate Productivity
 paths:
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
   /auth/login/:
     post:
-      operationId: login_create
+      operationId: auth_login_create
       description: |-
         Check the credentials and return the REST Token
         if the credentials are valid and authenticated.
@@ -16,7 +160,7 @@ paths:
         Accept the following POST parameters: username, password
         Return the REST Framework Token Object's key.
       tags:
-      - login
+      - auth
       requestBody:
         content:
           application/json:
@@ -30,29 +174,29 @@ paths:
               $ref: '#/components/schemas/Login'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/JWT'
           description: ''
   /auth/logout/:
     post:
-      operationId: logout_create
+      operationId: auth_logout_create
       description: |-
         Calls Django logout method and delete the Token object
         assigned to the current User object.
 
         Accepts/Returns nothing.
       tags:
-      - logout
+      - auth
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '200':
@@ -63,14 +207,14 @@ paths:
           description: ''
   /auth/password/change/:
     post:
-      operationId: password_change_create
+      operationId: auth_password_change_create
       description: |-
         Calls Django Auth SetPasswordForm save method.
 
         Accepts the following POST parameters: new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - password
+      - auth
       requestBody:
         content:
           application/json:
@@ -84,8 +228,8 @@ paths:
               $ref: '#/components/schemas/PasswordChange'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
@@ -95,29 +239,29 @@ paths:
           description: ''
   /auth/password/reset/:
     post:
-      operationId: password_reset_create
+      operationId: auth_password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - password
+      - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PasswordReset'
+              $ref: '#/components/schemas/CustomPasswordReset'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PasswordReset'
+              $ref: '#/components/schemas/CustomPasswordReset'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PasswordReset'
+              $ref: '#/components/schemas/CustomPasswordReset'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '200':
@@ -128,7 +272,7 @@ paths:
           description: ''
   /auth/password/reset/confirm/:
     post:
-      operationId: password_reset_confirm_create
+      operationId: auth_password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -137,7 +281,7 @@ paths:
             new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - password
+      - auth
       requestBody:
         content:
           application/json:
@@ -151,8 +295,8 @@ paths:
               $ref: '#/components/schemas/PasswordResetConfirm'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '200':
@@ -163,37 +307,37 @@ paths:
           description: ''
   /auth/registration/:
     post:
-      operationId: registration_create
+      operationId: auth_registration_create
       tags:
-      - registration
+      - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Register'
+              $ref: '#/components/schemas/CustomRegister'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Register'
+              $ref: '#/components/schemas/CustomRegister'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Register'
+              $ref: '#/components/schemas/CustomRegister'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/RestAuthDetail'
           description: ''
   /auth/registration/resend-email/:
     post:
-      operationId: registration_resend_email_create
+      operationId: auth_registration_resend_email_create
       tags:
-      - registration
+      - auth
       requestBody:
         content:
           application/json:
@@ -205,9 +349,10 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ResendEmailVerification'
+        required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '201':
@@ -218,9 +363,9 @@ paths:
           description: ''
   /auth/registration/verify-email/:
     post:
-      operationId: registration_verify_email_create
+      operationId: auth_registration_verify_email_create
       tags:
-      - registration
+      - auth
       requestBody:
         content:
           application/json:
@@ -234,8 +379,8 @@ paths:
               $ref: '#/components/schemas/VerifyEmail'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       - {}
       responses:
         '200':
@@ -244,9 +389,63 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
+  /auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /auth/token/verify/:
+    post:
+      operationId: auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
   /auth/user/:
     get:
-      operationId: user_retrieve
+      operationId: auth_user_retrieve
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -257,19 +456,19 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - user
+      - auth
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetails'
+                $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
           description: ''
     put:
-      operationId: user_update
+      operationId: auth_user_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -280,31 +479,31 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - user
+      - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDetails'
+              $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserDetails'
+              $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserDetails'
+              $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
         required: true
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetails'
+                $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
           description: ''
     patch:
-      operationId: user_partial_update
+      operationId: auth_user_partial_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -315,30 +514,405 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - user
+      - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedUserDetails'
+              $ref: '#/components/schemas/PatchedDj_Rest_Auth_Custom_User_'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedUserDetails'
+              $ref: '#/components/schemas/PatchedDj_Rest_Auth_Custom_User_'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedUserDetails'
+              $ref: '#/components/schemas/PatchedDj_Rest_Auth_Custom_User_'
       security:
+      - jwtAuth: []
       - cookieAuth: []
-      - basicAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetails'
+                $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
           description: ''
 components:
   schemas:
+    CountryEnum:
+      enum:
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
+      type: string
+    CustomPasswordReset:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    CustomRegister:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+          minLength: 1
+        email:
+          type: string
+          format: email
+        password1:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+      required:
+      - email
+      - first_name
+      - last_name
+      - password1
+      - password2
+    Dj_Rest_Auth_Custom_User_:
+      type: object
+      description: User model w/o password
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        country:
+          $ref: '#/components/schemas/CountryEnum'
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        phone_no:
+          type: string
+          nullable: true
+          maxLength: 128
+        gender:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        is_active:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        username:
+          type: string
+          nullable: true
+          maxLength: 255
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - country
+      - created
+      - date_joined
+      - email
+      - first_name
+      - id
+      - last_name
+      - modified
+      - slug
+    GenderEnum:
+      enum:
+      - male
+      - female
+      - non-binary
+      type: string
+    JWT:
+      type: object
+      description: Serializer for JWT authentication.
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        user:
+          $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
+      required:
+      - access_token
+      - refresh_token
+      - user
     Login:
       type: object
       properties:
@@ -351,6 +925,9 @@ components:
           type: string
       required:
       - password
+    NullEnum:
+      enum:
+      - null
     PasswordChange:
       type: object
       properties:
@@ -363,15 +940,6 @@ components:
       required:
       - new_password1
       - new_password2
-    PasswordReset:
-      type: object
-      description: Serializer for requesting a password reset e-mail.
-      properties:
-        email:
-          type: string
-          format: email
-      required:
-      - email
     PasswordResetConfirm:
       type: object
       description: Serializer for confirming a password reset attempt.
@@ -391,57 +959,72 @@ components:
       - new_password2
       - token
       - uid
-    PatchedUserDetails:
+    PatchedDj_Rest_Auth_Custom_User_:
       type: object
       description: User model w/o password
       properties:
-        pk:
+        id:
           type: integer
           readOnly: true
-          title: ID
-        username:
+        country:
+          $ref: '#/components/schemas/CountryEnum'
+        last_login:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-            only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
+          format: date-time
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
         email:
           type: string
           format: email
-          readOnly: true
-          title: Email address
+          maxLength: 255
         first_name:
           type: string
-          maxLength: 150
+          maxLength: 255
         last_name:
           type: string
-          maxLength: 150
-    Register:
-      type: object
-      properties:
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        phone_no:
+          type: string
+          nullable: true
+          maxLength: 128
+        gender:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        is_active:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
         username:
           type: string
-          maxLength: 150
-          minLength: 1
-        email:
+          nullable: true
+          maxLength: 255
+        avatar:
           type: string
-          format: email
-        password1:
-          type: string
-          writeOnly: true
-        password2:
-          type: string
-          writeOnly: true
-      required:
-      - password1
-      - password2
-      - username
+          format: uri
+          nullable: true
     ResendEmailVerification:
       type: object
       properties:
         email:
           type: string
           format: email
+      required:
+      - email
     RestAuthDetail:
       type: object
       properties:
@@ -450,44 +1033,26 @@ components:
           readOnly: true
       required:
       - detail
-    Token:
+    TokenRefresh:
       type: object
-      description: Serializer for Token model.
       properties:
-        key:
+        access:
           type: string
-          maxLength: 40
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
       required:
-      - key
-    UserDetails:
+      - access
+      - refresh
+    TokenVerify:
       type: object
-      description: User model w/o password
       properties:
-        pk:
-          type: integer
-          readOnly: true
-          title: ID
-        username:
+        token:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-            only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        email:
-          type: string
-          format: email
-          readOnly: true
-          title: Email address
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
+          writeOnly: true
       required:
-      - email
-      - pk
-      - username
+      - token
     VerifyEmail:
       type: object
       properties:
@@ -496,10 +1061,12 @@ components:
       required:
       - key
   securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
     cookieAuth:
       type: apiKey
       in: cookie
       name: sessionid
+    jwtAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "JWT"
