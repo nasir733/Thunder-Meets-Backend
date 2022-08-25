@@ -13,6 +13,7 @@ from django.utils.text import slugify
 from simple_history.models import HistoricalRecords
 from django_extensions.db.fields import AutoSlugField
 from django_countries.fields import CountryField
+from django.db import models
 
 # Create your models here.
 
