@@ -13,20 +13,17 @@ import os
 from datetime import timedelta
 from pathlib import Path
 import dj_database_url
+import django_heroku
+
+DEBUG =False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-IS_HEROKU = "DYNO" in os.environ
-if 'SECRET_KEY' in os.environ:
-    SECRET_KEY = os.environ["SECRET_KEY"]
+
 
 ALLOWED_HOSTS = []
 
 # Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
-if IS_HEROKU:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = []
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -35,12 +32,10 @@ else:
 SECRET_KEY = 'django-insecure--52z56g1q)skhx7ujys8hogyy6u54#e7rbbzi7o@(n%*qs86mp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if not IS_HEROKU:
-    DEBUG = True
+
 # Application definition
 
 DJANGO_APPS = [
@@ -286,5 +281,5 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Test Runner Config
-
+django_heroku.settings(locals())
 # Use HerokuDiscoverRunner on Heroku CI
