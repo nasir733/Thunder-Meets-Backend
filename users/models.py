@@ -93,6 +93,6 @@ class User(AbstractBaseUser, PermissionsMixin, CoreModel):
         return self.first_name
 
     def __str__(self):
-        return self.first_name + " " + self.last_name + " " + self.email
+        return self.first_name + " " + self.email
 
 
