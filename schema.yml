@@ -331,7 +331,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestAuthDetail'
+                $ref: '#/components/schemas/JWT'
           description: ''
   /auth/registration/resend-email/:
     post:

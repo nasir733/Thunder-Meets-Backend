@@ -14,14 +14,14 @@ from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 import django_heroku
-
-DEBUG =True
+PYTHONUNBUFFERED=0
+DEBUG =False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
 
@@ -65,7 +65,6 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
     'drf_spectacular',
-    'drf_spectacular_sidecar',
     'phonenumber_field',
     'simple_history',
     "corsheaders",
@@ -139,8 +138,7 @@ if "DATABASE_URL" in os.environ:
         conn_max_age=MAX_CONN_AGE, ssl_require=True)
 
     # Enable test database if found in CI environment.
-    if "CI" in os.environ:
-        DATABASES["default"]["TEST"] = DATABASES["default"]
+
 
 
 # Password validation
@@ -290,9 +288,6 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'The Meeting App For Ultimate Productivity',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': True,
-    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR',
 
     # OTHER SETTINGS
 }
@@ -300,8 +295,39 @@ SPECTACULAR_SETTINGS = {
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'mysite.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'MYAPP': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Test Runner Config
