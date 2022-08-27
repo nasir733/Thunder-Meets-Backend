@@ -14,12 +14,12 @@ from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 import django_heroku
-PYTHONUNBUFFERED=0
-DEBUG =False
+
+PYTHONUNBUFFERED = 0
+DEBUG = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 ALLOWED_HOSTS = ['*']
 
@@ -54,7 +54,7 @@ LOCAL_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
-"rest_framework_simplejwt.token_blacklist",
+    "rest_framework_simplejwt.token_blacklist",
     'rest_framework_simplejwt',
 
     'dj_rest_auth',
@@ -71,20 +71,13 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'django_countries',
 
-
-
-
-
-
-
 ]
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
-
-
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+
+    "corsheaders.middleware.CorsMiddleware",
 
     'django.middleware.security.SecurityMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
@@ -119,7 +112,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -138,8 +130,6 @@ if "DATABASE_URL" in os.environ:
         conn_max_age=MAX_CONN_AGE, ssl_require=True)
 
     # Enable test database if found in CI environment.
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -182,19 +172,26 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [BASE_DIR / "static"]  # new
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/media/"
 SITE_ID = 1
+# Enable WhiteNoise's GZip compression of static assets.
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -223,13 +220,12 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
 )
 REST_USE_JWT = True
-REST_AUTH_PW_RESET_USE_SITES_DOMAIN=True
+REST_AUTH_PW_RESET_USE_SITES_DOMAIN = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION =False
-
+ACCOUNT_EMAIL_VERIFICATION = False
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
@@ -242,7 +238,7 @@ SIMPLE_JWT = {
 }
 
 LOGIN_URL = "http://localhost:3000/login"
-SITE_URL ="http://localhost:8000"
+SITE_URL = "http://localhost:8000"
 FRONTEND_URL = "http://localhost:3000"
 REST_AUTH_USE_SITES_DOMAIN = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "Lokkna from Nasir"
@@ -267,7 +263,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
@@ -291,8 +286,6 @@ SPECTACULAR_SETTINGS = {
 
     # OTHER SETTINGS
 }
-# Enable WhiteNoise's GZip compression of static assets.
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 LOGGING = {
@@ -300,8 +293,8 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -317,9 +310,9 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers':['file'],
+            'handlers': ['file'],
             'propagate': True,
-            'level':'DEBUG',
+            'level': 'DEBUG',
         },
         'MYAPP': {
             'handlers': ['file'],
