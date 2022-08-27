@@ -56,6 +56,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     "rest_framework_simplejwt.token_blacklist",
     'rest_framework_simplejwt',
+    "whitenoise.runserver_nostatic",
 
     'dj_rest_auth',
     'allauth',
@@ -64,6 +65,9 @@ THIRD_PARTY_APPS = [
     'dj_rest_auth.registration',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+
     'drf_spectacular',
     'phonenumber_field',
     'simple_history',
@@ -179,11 +183,12 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [BASE_DIR / "static"]  # new
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
-MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+MEDIA_URL = '/media/'
+
 SITE_ID = 1
 # Enable WhiteNoise's GZip compression of static assets.
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
