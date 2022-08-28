@@ -14,7 +14,10 @@ class Meetings(models.Model):
     meeting_created_at = models.DateTimeField(auto_now_add=True)
     meeting_updated_at = models.DateTimeField(auto_now=True)
     meeting_created_by = models.ForeignKey('users.User', on_delete=models.CASCADE,null=True,blank=True)
-
+    class Meta:
+        ordering = ['-meeting_created_at']
+        verbose_name='Meeting'
+        verbose_name_plural='Meetings'
 
 
 
@@ -26,5 +29,12 @@ class Agendas(models.Model):
     description = models.TextField(null=True,blank=True)
     time_stamp = models.DateTimeField(null=True,blank=True)
     meeting = models.ForeignKey(Meetings,on_delete=models.CASCADE,related_name='agendas',null=True,blank=True)
+
+    class Meta:
+        verbose_name = 'Agenda'
+        verbose_name_plural = 'Agendas'
+
+    def __str__(self):
+        return self.name
 
 
