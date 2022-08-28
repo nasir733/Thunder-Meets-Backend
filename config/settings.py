@@ -47,10 +47,12 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
 ]
 LOCAL_APPS = [
     'core.apps.CoreConfig',
     'users.apps.UsersConfig',
+    'meeting',
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
@@ -239,7 +241,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_TOKEN_CLASSES": (
         "rest_framework_simplejwt.tokens.AccessToken",
-        # "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
 }
 

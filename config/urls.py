@@ -25,6 +25,7 @@ urlpatterns = [
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('auth/github/', GitHubLogin.as_view(), name='github_login'),
     path('auth/google/', GoogleLogin.as_view(), name='google_login'),
+    path('meeting/', include('meeting.urls')),
 
 
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

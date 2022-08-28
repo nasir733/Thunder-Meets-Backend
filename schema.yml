@@ -623,8 +623,349 @@ paths:
               schema:
                 $ref: '#/components/schemas/Dj_Rest_Auth_Custom_User_'
           description: ''
+  /meeting/:
+    get:
+      operationId: meeting_list
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - meeting
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMeetingList'
+          description: ''
+    post:
+      operationId: meeting_create
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      tags:
+      - meeting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+          description: ''
+  /meeting/{id}/:
+    get:
+      operationId: meeting_retrieve
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meetings.
+        required: true
+      tags:
+      - meeting
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+          description: ''
+    put:
+      operationId: meeting_update
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meetings.
+        required: true
+      tags:
+      - meeting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+          description: ''
+    patch:
+      operationId: meeting_partial_update
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meetings.
+        required: true
+      tags:
+      - meeting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMeeting'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMeeting'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMeeting'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+          description: ''
+    delete:
+      operationId: meeting_destroy
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this meetings.
+        required: true
+      tags:
+      - meeting
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /meeting/generate_agora_token/:
+    get:
+      operationId: meeting_generate_agora_token_retrieve
+      description: |-
+        #Sample Post Request Body for creating a meeting
+            {
+           "agendas":[
+              {
+                 "name":"htmasdfdsfl",
+                 "description":"talk about hrml",
+                 "time_stamp":"2022-08-28T18:30:09Z"
+              }
+           ],
+           "meeting_name":"Test",
+           "meeting_date":"2022-08-28",
+           "meeting_time":"18:32:35",
+           "meeting_location":"Wah",
+           "meeting_description":"alskdjfldsjkf",
+           "meeting_status":true,
+           "meeting_timestamp":"2022-08-28T18:33:47Z",
+           "meeting_created_at":"2022-08-28T18:34:08.312519Z",
+           "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
+        }
+      tags:
+      - meeting
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+          description: ''
 components:
   schemas:
+    Agendas:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        time_stamp:
+          type: string
+          format: date-time
+          nullable: true
+        meeting:
+          type: integer
+          nullable: true
+      required:
+      - id
     CountryEnum:
       enum:
       - AF
@@ -1012,9 +1353,72 @@ components:
           type: string
       required:
       - password
+    Meeting:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        agendas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agendas'
+        meeting_name:
+          type: string
+          maxLength: 100
+        meeting_location:
+          type: string
+          maxLength: 100
+        meeting_description:
+          type: string
+        meeting_status:
+          type: boolean
+        meeting_timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        meeting_created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        meeting_updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        meeting_created_by:
+          type: integer
+          nullable: true
+      required:
+      - agendas
+      - id
+      - meeting_created_at
+      - meeting_description
+      - meeting_location
+      - meeting_name
+      - meeting_updated_at
     NullEnum:
       enum:
       - null
+    PaginatedMeetingList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meeting'
     PasswordChange:
       type: object
       properties:
@@ -1103,6 +1507,41 @@ components:
         avatar:
           type: string
           format: uri
+          nullable: true
+    PatchedMeeting:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        agendas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agendas'
+        meeting_name:
+          type: string
+          maxLength: 100
+        meeting_location:
+          type: string
+          maxLength: 100
+        meeting_description:
+          type: string
+        meeting_status:
+          type: boolean
+        meeting_timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        meeting_created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        meeting_updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        meeting_created_by:
+          type: integer
           nullable: true
     ResendEmailVerification:
       type: object
