@@ -12,6 +12,7 @@ import time
 class Meeting(ModelViewSet):
     """
 #Sample Post Request Body for creating a meeting
+```
     {
    "agendas":[
       {
@@ -21,8 +22,6 @@ class Meeting(ModelViewSet):
       }
    ],
    "meeting_name":"Test",
-   "meeting_date":"2022-08-28",
-   "meeting_time":"18:32:35",
    "meeting_location":"Wah",
    "meeting_description":"alskdjfldsjkf",
    "meeting_status":true,
@@ -30,6 +29,7 @@ class Meeting(ModelViewSet):
    "meeting_created_at":"2022-08-28T18:34:08.312519Z",
    "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
 }
+```
     """
     serializer_class = MeetingSerializer
     queryset = Meetings.objects.all()
