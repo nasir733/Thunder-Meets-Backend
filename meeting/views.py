@@ -1,3 +1,5 @@
+import uuid
+
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -48,8 +50,10 @@ class Meeting(ModelViewSet):
         privilegeExpiredTs = currentTimestamp + expireTimeInSeconds
         if channelName:
 
-            token = RtcTokenBuilder.buildTokenWithAccount(
-            appID, appCertificate, channelName, SchedulerUser, Role_Attendee, privilegeExpiredTs)
+            # token = RtcTokenBuilder.buildTokenWithAccount(
+            # appID, appCertificate, channelName, SchedulerUser, Role_Attendee, privilegeExpiredTs)
+            token = RtcTokenBuilder.buildTokenWithUid(
+                appID, appCertificate, channelName, request.user.id, Role_Attendee, privilegeExpiredTs)
 
             return Response({'token': token, 'appID': appID})
         else:
