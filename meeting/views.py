@@ -22,12 +22,9 @@ class Meeting(ModelViewSet):
       }
    ],
    "meeting_name":"Test",
-   "meeting_location":"Wah",
    "meeting_description":"alskdjfldsjkf",
    "meeting_status":true,
    "meeting_timestamp":"2022-08-28T18:33:47Z",
-   "meeting_created_at":"2022-08-28T18:34:08.312519Z",
-   "meeting_updated_at":"2022-08-28T18:34:08.312538Z",
 }
 ```
     """

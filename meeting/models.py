@@ -7,7 +7,7 @@ from django.db import models
 # Create your models here.
 class Meetings(models.Model):
     meeting_name = models.CharField(max_length=100)
-    meeting_location = models.CharField(max_length=100)
+    channel_name = models.CharField(max_length=100,unique=True)
     meeting_description = models.TextField()
     meeting_status = models.BooleanField(default=True)
     meeting_timestamp= models.DateTimeField(auto_now_add=False,null=True,blank=True)
