@@ -29,7 +29,7 @@ class Meeting(ModelViewSet):
 ```
     """
     serializer_class = MeetingSerializer
-    queryset = Meetings.objects.all()
+    queryset = Meetings.objects.filter(meeting_status=True)
 
 
     @action(detail=False)
