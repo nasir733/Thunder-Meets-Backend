@@ -37,7 +37,6 @@ class Meeting(ModelViewSet):
     serializer_class = MeetingSerializer
     queryset = Meetings.objects.filter(meeting_status=True)
     search_fields = (
-       "meeting_created_by",
         "channel_name",
 
     )
