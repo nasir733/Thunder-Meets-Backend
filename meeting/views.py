@@ -13,6 +13,7 @@ import json
 import time
 from agora_token_builder import RtcTokenBuilder
 import random
+from rest_framework import permissions
 class Meeting(ModelViewSet):
     """
 #Sample Post Request Body for creating a meeting
@@ -26,6 +27,7 @@ class Meeting(ModelViewSet):
       }
    ],
    "meeting_name":"Test",
+    "channel_name":"Test",
    "meeting_description":"alskdjfldsjkf",
    "meeting_status":true,
    "meeting_timestamp":"2022-08-28T18:33:47Z",
@@ -38,6 +40,16 @@ class Meeting(ModelViewSet):
        "meeting_created_by__email",
 
     )
+    def get_permissions(self):
+        if self.action == "retrieve" or self.action == "list":
+            permission_classes = [permissions.AllowAny]
+
+        elif self.action == "create" or self.action == "generate_agora_token" :
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            permission_classes = []
+
+        return [permission() for permission in permission_classes]
 
 
     @action(detail=False)
