@@ -11,6 +11,8 @@ from .agora_key.RtcTokenBuilder import RtcTokenBuilder, Role_Attendee
 import os
 import json
 import time
+from agora_token_builder import RtcTokenBuilder
+import random
 class Meeting(ModelViewSet):
     """
 #Sample Post Request Body for creating a meeting
@@ -48,21 +50,14 @@ class Meeting(ModelViewSet):
         expireTimeInSeconds = 3600
         currentTimestamp = int(time.time())
         privilegeExpiredTs = currentTimestamp + expireTimeInSeconds
-        if channelName:
+        uid = random.randint(1, 230)
+        expirationTimeInSeconds = 3600
+        currentTimeStamp = int(time.time())
+        privilegeExpiredTs = currentTimeStamp + expirationTimeInSeconds
+        role = 1
 
-            # token = RtcTokenBuilder.buildTokenWithAccount(
-            # appID, appCertificate, channelName, SchedulerUser, Role_Attendee, privilegeExpiredTs)
-            token = RtcTokenBuilder.buildTokenWithUid(
-                appID, appCertificate, channelName, request.user.id, Role_Attendee, privilegeExpiredTs)
-
-            return Response({'token': token, 'appID': appID})
-        else:
-            return Response({'error': 'channelName is required'})
-
-
-
-
-
+        token = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs)
+        return Response({'token': token, 'uid': uid})
 
 
 class AgoraToken(APIView):
