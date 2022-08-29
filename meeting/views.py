@@ -75,6 +75,16 @@ class Meeting(ModelViewSet):
         token = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs)
         return Response({'token': token, 'uid': uid})
 
+    @action(detail=False)
+    def my_meetings(self,request):
+        user = request.user
+        if user.is_authenticated:
+            meetings = Meetings.objects.filter(meeting_created_by=user)
+            serializer = MeetingSerializer(meetings,many=True)
+            return Response(serializer.data)
+
+        return Response("User not authenticated",status=401)
+
 
 class AgoraToken(APIView):
     def get(self,request):
