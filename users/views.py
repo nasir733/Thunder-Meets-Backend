@@ -5,7 +5,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 
 class GitHubLogin(SocialLoginView):
     adapter_class = GitHubOAuth2Adapter
-    callback_url ="http://localhost:3000/login?success=true"
+    callback_url ="https://thundermeets-frontend.vercel.app/login/"
     client_class = OAuth2Client
 
 
